@@ -16,15 +16,15 @@ class CorePlugin(naPlugin):
         signal.signal(signal.SIGTERM, self.ProcessControl)
         signal.signal(signal.SIGUSR1, self.ProcessControl)
 
-    @Plugin.listen('Ready')
+    @naPlugin.listen('Ready')
     def on_ready(self, event):
         self.log.info(f"{len(event.guilds)} guilds in shard {self.client.config.shard_id}")
 
-    @Plugin.command('ping', level=50)
+    @naPlugin.command('ping', level=50)
     def cmd_ping(self, event):
         return event.msg.reply("Current Ping: **{}** ms".format(round(self.client.gw.latency, 2)))
 
-    @Plugin.command('eval', level=100)
+    @naPlugin.command('eval', level=100)
     def cmd_eval(self, event):
         """
         This a Developer command which allows us to run code without having to restart the bot.
