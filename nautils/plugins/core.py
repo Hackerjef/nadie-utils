@@ -2,6 +2,7 @@ import os
 import pprint
 import signal
 
+from disco.bot import CommandLevels
 from gevent.exceptions import BlockingSwitchOutError
 from nautils import naPlugin
 
@@ -20,11 +21,11 @@ class CorePlugin(naPlugin):
     def on_ready(self, event):
         self.log.info(f"{len(event.guilds)} guilds in shard {self.client.config.shard_id}")
 
-    @naPlugin.command('ping', level=50)
+    @naPlugin.command('ping', level=CommandLevels.MOD)
     def cmd_ping(self, event):
         return event.msg.reply("Current Ping: **{}** ms".format(round(self.client.gw.latency, 2)))
 
-    @naPlugin.command('eval', level=100)
+    @naPlugin.command('eval', level=CommandLevels.ADMIN)
     def cmd_eval(self, event):
         """
         This a Developer command which allows us to run code without having to restart the bot.
