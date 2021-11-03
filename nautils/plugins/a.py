@@ -1,13 +1,13 @@
-from disco.bot import Plugin
+from nautils import naPlugin
 
 from nautils.config import options
 
 
-class aPlugin(Plugin):
+class aPlugin(naPlugin):
     def load(self, ctx):
         super(aPlugin, self).load(ctx)
 
-    @Plugin.listen("MessageCreate")
+    @naPlugin.listen("MessageCreate")
     def a_listener(self, event):
         if not options['a']['enabled']:
             return

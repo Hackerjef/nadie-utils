@@ -3,12 +3,12 @@ import pprint
 import signal
 
 from gevent.exceptions import BlockingSwitchOutError
-from disco.bot import Plugin
+from nautils import naPlugin
 
 PY_CODE_BLOCK = u'```py\n{}\n```'
 
 
-class CorePlugin(Plugin):
+class CorePlugin(naPlugin):
     def load(self, ctx):
         super(CorePlugin, self).load(ctx)
         # register Process listeners

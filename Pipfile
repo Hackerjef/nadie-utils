@@ -13,4 +13,4 @@ holster = {editable = true, git = "https://github.com/elderlabs/holster"}
 python_version = "3.9"
 
 [scripts]
-web = "python -m disco.cli --config config.yaml"
+bot = "python -m disco.cli --config config.yaml"
