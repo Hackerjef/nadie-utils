@@ -11,3 +11,6 @@ holster = {editable = true, git = "https://github.com/elderlabs/holster"}
 
 [requires]
 python_version = "3.9"
+
+[scripts]
+web = "python -m disco.cli --config config.yaml"
