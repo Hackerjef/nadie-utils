@@ -18,5 +18,5 @@ class aPlugin(naPlugin):
         if event.author.id in options['a']['exception']:
             return
 
-        if 'a' == event.msg.content:
+        if 'a' != event.content:
             event.delete()
