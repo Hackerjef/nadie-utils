@@ -10,7 +10,7 @@ from disco.types.channel import ChannelType
 from disco.types.permissions import Permissions
 
 from nautils import naPlugin
-from nautils.config import GetValue
+from nautils.config import Getcfgvalue
 from nautils.utils import parse_natural, get_level
 
 
@@ -39,7 +39,7 @@ class CorePlugin(naPlugin):
         if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
             return
 
-        commands = list(self.bot.get_commands_for_message(False, {}, GetValue("options.prefix", ['!']), event.message))
+        commands = list(self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
 
         if not len(commands):
             return

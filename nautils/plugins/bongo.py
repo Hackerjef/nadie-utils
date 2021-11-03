@@ -1,6 +1,6 @@
 from nautils import naPlugin
 
-from nautils.config import GetValue
+from nautils.config import Getcfgvalue
 
 
 # within nautils.config lol
@@ -16,13 +16,13 @@ class bongoPlugin(naPlugin):
 
     @naPlugin.listen("MessageCreate")
     def bongo_listener(self, event):
-        if GetValue('options.bongo.enabled', False):
+        if Getcfgvalue('options.bongo.enabled', False):
             return
 
-        if event.channel.id != GetValue('options.bongo.cid', None):
+        if event.channel.id != Getcfgvalue('options.bongo.cid', None):
             return
 
-        if event.author.id in GetValue('options.bongo.exception', []):
+        if event.author.id in Getcfgvalue('options.bongo.exception', []):
             return
 
         # @justin do ur shit here lol

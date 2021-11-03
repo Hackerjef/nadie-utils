@@ -1,11 +1,11 @@
-from nautils.config import GetValue
+from nautils.config import Getcfgvalue
 
 
 def get_level(guild, user):
     user_level = 0
 
     member = guild.get_member(user)
-    levels = GetValue("options.levels", [])
+    levels = Getcfgvalue("options.levels", [])
 
     if not member:
         return user_level
