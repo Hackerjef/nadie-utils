@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+betterdisco-py = {editable = true, ref = "staging/dooley", git = "https://github.com/elderlabs/BetterDisco.git", extras=['performance', 'music', 'yaml']}
+holster = {editable = true, git = "https://github.com/elderlabs/holster"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
