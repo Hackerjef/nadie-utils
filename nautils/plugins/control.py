@@ -21,9 +21,9 @@ class ControlPlugin(naPlugin):
     @naPlugin.command('update', level=CommandLevels.OWNER)
     def update(self, event):
         # thank dooley :bongo:
-        g = git.cmd.Git(os.getcwd())
-        p = g.pull()
-        event.msg.reply(PY_CODE_BLOCK.format(p))
+        grepo = git.cmd.Git(os.getcwd())
+        gpull = grepo.pull()
+        event.msg.reply(PY_CODE_BLOCK.format(gpull))
         self.ProcessControl(signalNumber=2)
 
     def ProcessControl(self, signalNumber=None, frame=None):
