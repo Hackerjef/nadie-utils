@@ -20,7 +20,6 @@ PY_CODE_BLOCK = u'```py\n{}\n```'
 class CorePlugin(naPlugin):
     def load(self, ctx):
         super(CorePlugin, self).load(ctx)
-
         # noinspection PyAttributeOutsideInit
         self.startup = ctx.get('startup', datetime.utcnow())
 
@@ -32,15 +31,20 @@ class CorePlugin(naPlugin):
     def on_message_command(self, event):
         if event.message.channel.type in (ChannelType.DM, ChannelType.GROUP_DM):
             return
+
         if event.guild.id != Getcfgvalue("options.gid", 0):
             return
+
         if event.message.author.bot:
             return
+
         if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
             return
+
         commands = list(self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
-        if not len(commands):
+        if not commands:
             return
+
         # Grab level
         ulevel = get_level(event.guild, event.author)
         for command, match in commands:
