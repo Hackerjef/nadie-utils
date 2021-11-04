@@ -43,7 +43,7 @@ class CorePlugin(naPlugin):
             return
 
         commands = list(self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
-
+        print(commands)
         if not len(commands):
             return
 
