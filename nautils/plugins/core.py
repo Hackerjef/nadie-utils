@@ -28,7 +28,7 @@ class CorePlugin(naPlugin):
         self.log.info(f"{len(event.guilds)} guilds in shard {self.client.config.shard_id}")
 
     @naPlugin.listen('MessageCreate')
-    def on_message_command(self, event):
+    def on_command_msg(self, event):
         if event.message.channel.type in (ChannelType.DM, ChannelType.GROUP_DM):
             return
 
