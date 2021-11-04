@@ -3,13 +3,6 @@ from nautils import naPlugin
 from nautils.config import Getcfgvalue
 
 
-# within nautils.config lol
-# options:
-#   bongo:
-#     enabled: true
-#     cid:
-#     exception: []
-
 class bongoPlugin(naPlugin):
     def load(self, ctx):
         super(bongoPlugin, self).load(ctx)

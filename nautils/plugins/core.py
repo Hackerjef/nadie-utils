@@ -28,38 +28,28 @@ class CorePlugin(naPlugin):
     def on_ready(self, event):
         self.log.info(f"{len(event.guilds)} guilds in shard {self.client.config.shard_id}")
 
-    @naPlugin.listen('MessageCreate')
-    def on_message_command(self, event):
-        print("cmd int")
-        if event.message.channel.type in (ChannelType.DM, ChannelType.GROUP_DM):
-            return
-        print("cmd 2")
-        if event.guild.id != Getcfgvalue("options.gid", 0):
-            return
-        print("cmd 3")
-        if event.message.author.bot:
-            return
-        print("cmd 4")
-        if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
-            return
-        print("cmd 5")
-        commands = list(self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
-        print(commands)
-        if not len(commands):
-            return
-        print("cmd 7")
-        # Grab level
-        ulevel = get_level(event.guild, event.author)
-        for command, match in commands:
-            print("cmd 8")
-            clevel = command.level or 0
-            if ulevel < clevel:
-                continue
-
-            command_event = CommandEvent(command, event.message, match)
-            command.plugin.execute(command_event)
-            print("cmd ran")
-        print("cmd end")
+    # @naPlugin.listen('MessageCreate')
+    # def on_message_command(self, event):
+    #     if event.message.channel.type in (ChannelType.DM, ChannelType.GROUP_DM):
+    #         return
+    #     if event.guild.id != Getcfgvalue("options.gid", 0):
+    #         return
+    #     if event.message.author.bot:
+    #         return
+    #     if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
+    #         return
+    #     commands = list(self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
+    #     if not len(commands):
+    #         return
+    #     # Grab level
+    #     ulevel = get_level(event.guild, event.author)
+    #     for command, match in commands:
+    #         clevel = command.level or 0
+    #         if ulevel < clevel:
+    #             continue
+    #
+    #         command_event = CommandEvent(command, event.message, match)
+    #         command.plugin.execute(command_event)
 
     @naPlugin.command('uptime', level=CommandLevels.MOD)
     def command_uptime(self, event):
