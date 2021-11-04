@@ -58,7 +58,8 @@ class CorePlugin(naPlugin):
 
             command_event = CommandEvent(command, event.message, match)
             command.plugin.execute(command_event)
-            print("cmd end")
+            print("cmd ran")
+        print("cmd end")
 
     @naPlugin.command('uptime', level=CommandLevels.MOD)
     def command_uptime(self, event):
