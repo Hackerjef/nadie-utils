@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 betterdisco-py = {editable = true, ref = "staging/dooley", git = "https://github.com/elderlabs/BetterDisco.git", extras=['performance', 'music', 'yaml']}
 holster = {editable = true, git = "https://github.com/elderlabs/holster"}
+gitpython = "*"
 
 [dev-packages]
 
