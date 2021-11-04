@@ -1,6 +1,6 @@
 from nautils import naPlugin
 
-from nautils.config import options
+from nautils.config import GetValue
 
 
 class aPlugin(naPlugin):
@@ -9,13 +9,13 @@ class aPlugin(naPlugin):
 
     @naPlugin.listen("MessageCreate")
     def a_listener(self, event):
-        if not options['a']['enabled']:
+        if GetValue('options.a.enabled', False):
             return
 
-        if event.channel.id != options['a']['cid']:
+        if event.channel.id != GetValue('options.a.cid', None):
             return
 
-        if event.author.id in options['a']['exception']:
+        if event.author.id in GetValue('options.a.exception', []):
             return
 
         if 'a' != event.content:
