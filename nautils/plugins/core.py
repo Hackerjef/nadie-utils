@@ -44,7 +44,7 @@ class CorePlugin(naPlugin):
         if not len(commands):
             return
 
-        # Grab level of user
+        # Grab level
         ulevel = get_level(event.guild, event.author)
         for command, match in commands:
             clevel = command.level or 0
