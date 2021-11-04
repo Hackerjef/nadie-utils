@@ -44,13 +44,13 @@ class CorePlugin(naPlugin):
         if not len(commands):
             return
 
-        # Grab level
-        level = get_level(event.guild, event.author)
-
+        # Grab level of user
+        ulevel = get_level(event.guild, event.author)
         for command, match in commands:
             clevel = command.level or 0
-            if not level < clevel:
+            if ulevel < clevel:
                 continue
+
             command_event = CommandEvent(command, event.message, match)
             command.plugin.execute(command_event)
 
