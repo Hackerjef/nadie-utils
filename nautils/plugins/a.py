@@ -7,8 +7,8 @@ class aPlugin(naPlugin):
     def load(self, ctx):
         super(aPlugin, self).load(ctx)
 
-    @naPlugin.listen("MessageCreate")
-    def a_listener(self, event):
+    @naPlugin.listen('MessageCreate')
+    def a_channel_listener(self, event):
         print(event.content)
         if Getcfgvalue('options.a.enabled', False):
             return
