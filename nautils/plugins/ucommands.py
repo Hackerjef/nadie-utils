@@ -16,7 +16,6 @@ class ucommandsPlugin(naPlugin):
             return event.msg.reply('You must be connected to voice to use that command.')
 
         r = self.client.api.http(Routes.CHANNELS_INVITES_CREATE, dict(channel=state.channel.id),
-                                 json={'max_age': 0, 'target_type': 2, 'target_application_id': Getcfgvalue("options.ucommands.wtid", "")})
+                                 json={'max_age': 0, 'max_uses': 2, 'target_type': 2, 'target_application_id': Getcfgvalue("options.ucommands.wtid", "")})
         invite = Invite.create(self.client, r.json())
-        self.log.info(invite)
-        return event.msg.reply('a')
+        return event.msg.reply(f"https://discord.gg/{invite.code}")
