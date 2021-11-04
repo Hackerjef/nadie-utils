@@ -9,7 +9,8 @@ class bongoPlugin(naPlugin):
 
     @naPlugin.listen("MessageCreate")
     def bongo_listener(self, event):
-        if Getcfgvalue('options.bongo.enabled', False):
+
+        if not Getcfgvalue('options.a.enabled', False):
             return
 
         if event.channel.id != Getcfgvalue('options.bongo.cid', None):
