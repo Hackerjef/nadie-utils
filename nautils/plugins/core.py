@@ -2,8 +2,10 @@ import os
 import pprint
 import signal
 
-from disco.bot import CommandLevels
+from disco.bot.command import CommandEvent
+from disco.types.permissions import Permissions
 from gevent.exceptions import BlockingSwitchOutError
+from nautils.config import levels
 from nautils import naPlugin
 
 PY_CODE_BLOCK = u'```py\n{}\n```'
@@ -17,15 +19,52 @@ class CorePlugin(naPlugin):
         signal.signal(signal.SIGTERM, self.ProcessControl)
         signal.signal(signal.SIGUSR1, self.ProcessControl)
 
+    @naPlugin.listen('MessageCreate')
+    def cmd_handler(self, event):
+        if event.message.author.bot:
+            return
+
+        if hasattr(event, 'guild') and event.guild:
+            guild_id = event.guild.id
+        elif hasattr(event, 'guild_id') and event.guild_id:
+            guild_id = event.guild_id
+        else:
+            guild_id = None
+
+        if not guild_id:
+            return
+
+        perms = event.message.channel.get_permissions(self.state.me)
+        if not perms.can(Permissions.SEND_MESSAGES):
+            return
+
+        user_level = levels[event.author.id] if event.author.id in levels else 0
+        commands = list(self.bot.get_commands_for_message(False, {}, self.bot.config.command_prefixes, event.message))
+
+        if not len(commands):
+            return
+
+        for command, match in commands:
+            level = command.level or 0
+
+            if not user_level >= level:
+                return
+
+            try:
+                command_event = CommandEvent(command, event.message, match)
+                command.plugin.execute(command_event)
+            except:
+                return event.reply('Command error')
+
     @naPlugin.listen('Ready')
     def on_ready(self, event):
         self.log.info(f"{len(event.guilds)} guilds in shard {self.client.config.shard_id}")
 
-    @naPlugin.command('ping', level=CommandLevels.MOD)
+    @naPlugin.command('ping', level=50)
     def cmd_ping(self, event):
         return event.msg.reply("Current Ping: **{}** ms".format(round(self.client.gw.latency, 2)))
 
-    @naPlugin.command('eval', level=CommandLevels.ADMIN)
+    @naPlugin.command('eval', level=100)
     def cmd_eval(self, event):
         """
         This a Developer command which allows us to run code without having to restart the bot.
