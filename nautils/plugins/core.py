@@ -44,7 +44,7 @@ class CorePlugin(naPlugin):
         if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
             return
 
-        commands = list(self.bot.get_commands_for_message(False, {}, [GetValue("options.prefix", ['!'])], event.message))
+        commands = list(self.bot.get_commands_for_message(False, {}, GetValue("options.prefix", ['!']), event.message))
 
         if not len(commands):
             return
