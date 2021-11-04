@@ -30,10 +30,13 @@ class CorePlugin(naPlugin):
 
     @naPlugin.listen('MessageCreate')
     def on_message_command(self, event):
-        if event.message.author.bot:
+        if event.message.channel.type in (ChannelType.DM, ChannelType.GROUP_DM):
             return
 
-        if event.message.channel.type in (ChannelType.DM, ChannelType.GROUP_DM):
+        if event.guild.id != Getcfgvalue("options.gid", 0):
+            return
+
+        if event.message.author.bot:
             return
 
         if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
