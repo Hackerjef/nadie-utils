@@ -45,5 +45,5 @@ def Get_Hash(file):
     fhash = hashlib.md5()
     with open(file, "r", encoding='utf-8') as f:
         while chunk := f.read(8192):
-            fhash.update(chunk)
+            fhash.update(chunk.encode('utf-8'))
     return fhash.hexdigest()
