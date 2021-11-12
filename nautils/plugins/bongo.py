@@ -27,10 +27,13 @@ class bongoPlugin(naPlugin):
         if not event.content:
             return event.delete()
 
+
+
         # if something
         msg = re.sub(EMOJI_RE, "", event.content)
-        self.log.info(len(msg))
-        if msg:
+        if msg.replace(" ", ""):
             return event.delete()
+
+
 
         self.log.info(f"emoji's found: {re.findall(EMOJI_RE, event.content)}")
