@@ -19,5 +19,8 @@ class aPlugin(naPlugin):
         if event.author.id in Getcfgvalue('options.a.exception', []):
             return
 
+        if not event.content:
+            return event.delete()
+
         if 'a' != event.content:
             event.delete()
