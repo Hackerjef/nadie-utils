@@ -1,6 +1,10 @@
+import re
+
 from nautils import naPlugin
 
 from nautils.config import Getcfgvalue
+
+a_re = re.compile(r"a")
 
 
 class aPlugin(naPlugin):
@@ -22,5 +26,5 @@ class aPlugin(naPlugin):
         if not event.content:
             return event.delete()
 
-        if 'a'.lower() != event.content.lower():
-            event.delete()
+        if re.sub(a_re, "", event.content.replace(" ", "")):
+            return event.delete()
