@@ -26,5 +26,5 @@ class aPlugin(naPlugin):
         if not event.content:
             return event.delete()
 
-        if re.sub(a_re, "", event.content.replace(" ", "")):
+        if re.sub(a_re, "", event.content.replace(" ", "").lower()):
             return event.delete()
