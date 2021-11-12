@@ -22,5 +22,5 @@ class aPlugin(naPlugin):
         if not event.content:
             return event.delete()
 
-        if 'a' != event.content:
+        if 'a'.lower() != event.content.lower():
             event.delete()
