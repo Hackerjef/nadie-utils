@@ -40,7 +40,7 @@ def auth_discord():
 @join.route('/callback')
 def auth_discord_callback():
     if request.values.get('error'):
-        return 'An error has occurred', 418
+        return redirect("https://youtu.be/LDU_Txk06tM?t=75")
 
     if 'state' not in session:
         return 'no state', 400
