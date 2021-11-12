@@ -27,11 +27,7 @@ class bongoPlugin(naPlugin):
         if not event.content:
             return event.delete()
 
-
-
-        # if something
-        msg = re.sub(EMOJI_RE, "", event.content)
-        if msg.replace(" ", ""):
+        if re.sub(EMOJI_RE, "", event.content.replace(" ", "")):
             return event.delete()
 
 
