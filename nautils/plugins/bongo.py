@@ -24,7 +24,7 @@ class bongoPlugin(naPlugin):
         if event.author.id in Getcfgvalue('options.bongo.exception', []):
             return
 
-        if "content" not in event:
+        if "content" not in dir(event):
             return event.delete()
 
         # if something
