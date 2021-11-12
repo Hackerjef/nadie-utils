@@ -24,7 +24,7 @@ class webPlugin(naPlugin):
 
     def init_api(self):
         if Getcfgvalue("web.secret_key", None):
-            secret_key = Getcfgvalue("web.secret_key")
+            secret_key = Getcfgvalue("web.secret_key", None)
         else:
             secret_key = genkey()
 
