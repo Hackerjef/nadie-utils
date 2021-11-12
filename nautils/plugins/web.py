@@ -1,7 +1,7 @@
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
-from nautils.routes import join, root
+from nautils.routes import join
 
 
 def genkey():
@@ -32,5 +32,5 @@ class webPlugin(naPlugin):
         self.bot.http.config['MAX_CONTENT_LENGTH'] = (16 * 1024 * 1024)
         self.bot.http.wsgi_app = ProxyFix(self.bot.http.wsgi_app, x_host=1)
         self.bot.http.register_blueprint(join)
-        self.bot.http.register_blueprint(root)
+        #self.bot.http.register_blueprint(root)
 
