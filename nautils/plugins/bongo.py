@@ -30,6 +30,6 @@ class bongoPlugin(naPlugin):
         if re.sub(EMOJI_RE, "", event.content.replace(" ", "")):
             return event.delete()
 
-
-
-        self.log.info(f"emoji's found: {re.findall(EMOJI_RE, event.content)}")
+        for emote in re.findall(EMOJI_RE, event.content):
+            if "bongo" not in emote.lower():
+                return event.delete()
