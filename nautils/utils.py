@@ -43,7 +43,7 @@ def parse_natural(timedelta):
 
 def Get_Hash(file):
     fhash = hashlib.md5()
-    with open(file, "r") as f:
+    with open(file, "r", encoding='utf-8') as f:
         while chunk := f.read(8192):
             fhash.update(chunk)
     return fhash.hexdigest()
