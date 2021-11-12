@@ -1,7 +1,7 @@
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
-from nautils.routes import join
+from nautils.routes import join, root
 
 
 def genkey():
