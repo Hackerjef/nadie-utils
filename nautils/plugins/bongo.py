@@ -28,7 +28,7 @@ class bongoPlugin(naPlugin):
             return event.delete()
 
         # if something
-        msg = EMOJI_RE.sub(event.content)
+        msg = re.sub(EMOJI_RE, event.content)
         if msg:
             self.log.info(msg)
             return event.delete()
