@@ -23,7 +23,12 @@ class webPlugin(naPlugin):
         self.init_api()
 
     def init_api(self):
-        self.bot.http.secret_key = bytes(Getcfgvalue("web.secret_key", genkey()), 'utf8')
+        if Getcfgvalue("web.secret_key", None):
+            secret_key = Getcfgvalue("web.secret_key")
+        else:
+            secret_key = genkey()
+
+        self.bot.http.secret_key = bytes(secret_key, 'utf8')
         self.bot.http.config['MAX_CONTENT_LENGTH'] = (16 * 1024 * 1024)
         self.bot.http.wsgi_app = ProxyFix(self.bot.http.wsgi_app, x_host=1)
         self.bot.http.register_blueprint(join)
