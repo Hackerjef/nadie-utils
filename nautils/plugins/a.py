@@ -8,6 +8,7 @@ class aPlugin(naPlugin):
         super(aPlugin, self).load(ctx)
 
     @naPlugin.listen('MessageCreate')
+    @naPlugin.listen('MessageUpdate')
     def a_listener(self, event):
         if not Getcfgvalue('options.a.enabled', False):
             return

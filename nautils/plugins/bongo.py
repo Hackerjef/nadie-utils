@@ -1,6 +1,10 @@
+import re
+
 from nautils import naPlugin
 
 from nautils.config import Getcfgvalue
+
+EMOJI_RE = re.compile(r"<a:.+?:\d+>|<:.+?:\d+>")
 
 
 class bongoPlugin(naPlugin):
@@ -8,9 +12,10 @@ class bongoPlugin(naPlugin):
         super(bongoPlugin, self).load(ctx)
 
     @naPlugin.listen("MessageCreate")
+    @naPlugin.listen('MessageUpdate')
     def bongo_listener(self, event):
 
-        if not Getcfgvalue('options.a.enabled', False):
+        if not Getcfgvalue('options.bongo.enabled', False):
             return
 
         if event.channel.id != Getcfgvalue('options.bongo.cid', None):
@@ -19,4 +24,12 @@ class bongoPlugin(naPlugin):
         if event.author.id in Getcfgvalue('options.bongo.exception', []):
             return
 
-        # @justin do ur shit here lol
+        if "content" not in event:
+            return event.delete()
+
+        # if something
+        msg = re.sub(EMOJI_RE, event.content);
+        if msg:
+            return event.delete()
+
+        self.log.info(f"emoji's found: ${re.findall(EMOJI_RE, event.content)}")
