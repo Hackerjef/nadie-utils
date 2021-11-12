@@ -1,3 +1,5 @@
+import hashlib
+
 from nautils.config import Getcfgvalue
 
 
@@ -37,3 +39,11 @@ def parse_natural(timedelta):
     else:
         value = str(int(td.seconds)) + 's'
     return value
+
+
+def Get_Hash(file):
+    fhash = hashlib.md5()
+    with open(file, "r") as f:
+        while chunk := f.read(8192):
+            fhash.update(chunk)
+    return fhash.hexdigest()

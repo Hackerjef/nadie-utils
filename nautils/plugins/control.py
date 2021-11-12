@@ -1,11 +1,14 @@
 import os
 import signal
+
+import gevent.subprocess
 import git
 
 from disco.bot import CommandLevels
 from gevent.exceptions import BlockingSwitchOutError
 
 from nautils import naPlugin
+from nautils.utils import Get_Hash
 
 PY_CODE_BLOCK = u'```py\n{}\n```'
 
@@ -21,9 +24,16 @@ class ControlPlugin(naPlugin):
     @naPlugin.command('update', level=CommandLevels.OWNER)
     def update(self, event):
         # thank dooley :bongo:
+        pipfile_hash = Get_Hash("Pipfile.lock")
+
         grepo = git.cmd.Git(os.getcwd())
         gpull = grepo.pull()
-        event.msg.reply(PY_CODE_BLOCK.format(gpull))
+        if gpull == "Already up to date.":
+            return event.msg.reply("Repo up to date")
+
+        if pipfile_hash != Get_Hash("Pipfile.lock"):
+            event.msg.reply("Installing packages...")
+            event.msg.reply(PY_CODE_BLOCK.format(gevent.subprocess.Popen(["env", "CI=true", "pipenv", "--bare", "install"])))
         self.ProcessControl(signalNumber=2)
 
     def ProcessControl(self, signalNumber=None, frame=None):
