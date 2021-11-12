@@ -13,13 +13,13 @@ def token_updater(token):
 
 def make_discord_session_join(token=None, state=None, scope=None):
     return OAuth2Session(
-        client_id=Getcfgvalue("discord.client_id", None),
+        client_id=str(Getcfgvalue("discord.client_id", None)),
         token=token,
         state=state,
         scope=scope,
         redirect_uri=Getcfgvalue("discord.redirects.join", None),
         auto_refresh_kwargs={
-            'client_id': Getcfgvalue("discord.client_id", None),
+            'client_id': str(Getcfgvalue("discord.client_id", None)),
             'client_secret': Getcfgvalue("discord.client_secret", None),
         },
         auto_refresh_url=Getcfgvalue("discord.oauth.token", None),
@@ -60,11 +60,11 @@ def auth_discord_callback():
     lsession.headers.update({'content-type': 'application/x-www-form-urlencoded'})
     lsession.post(Getcfgvalue("discord.oauth.revoke", None),
                   data={
-                      'client_id': Getcfgvalue("discord.client_id", None),
+                      'client_id': str(Getcfgvalue("discord.client_id", None)),
                       'client_secret': Getcfgvalue("discord.client_secret", None),
                       'token': session['state']})
 
-    if user_data['id'] in Getcfgvalue("options.joins.soft_banned", []):
+    if int(user_data['id']) in Getcfgvalue("options.joins.soft_banned", []):
         return redirect("https://youtu.be/LDU_Txk06tM?t=75")
     else:
         return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
