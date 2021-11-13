@@ -1,3 +1,5 @@
+import os
+
 from flask import send_file
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nautils import naPlugin
@@ -15,7 +17,7 @@ def genkey():
 
 
 def root():
-    return send_file('./nautils/www/dmeta.html')
+    return send_file(os.getcwd() + '/nautils/www/dmeta.html')
 
 
 class webPlugin(naPlugin):
