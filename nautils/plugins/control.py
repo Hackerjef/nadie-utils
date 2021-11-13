@@ -30,6 +30,7 @@ class ControlPlugin(naPlugin):
         gpull = grepo.pull()
         if gpull == "Already up to date.":
             return event.msg.reply("Repo up to date")
+        event.msg.reply(PY_CODE_BLOCK.format(gpull))
 
         if pipfile_hash != Get_Hash("Pipfile.lock"):
             event.msg.reply("Installing packages...")

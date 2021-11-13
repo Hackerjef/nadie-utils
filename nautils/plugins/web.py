@@ -33,4 +33,3 @@ class webPlugin(naPlugin):
         self.bot.http.wsgi_app = ProxyFix(self.bot.http.wsgi_app, x_host=1)
         self.bot.http.register_blueprint(join)
         #self.bot.http.register_blueprint(root)
-

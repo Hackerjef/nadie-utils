@@ -1,6 +1,4 @@
-import os
 import pprint
-import signal
 
 from datetime import datetime
 
@@ -62,6 +60,15 @@ class CorePlugin(naPlugin):
     @naPlugin.command('ping', level=CommandLevels.MOD)
     def cmd_ping(self, event):
         return event.msg.reply("Current Ping: **{}** ms".format(round(self.client.gw.latency, 2)))
+
+    @naPlugin.command('echo', '<message:str...>', level=CommandLevels.OWNER)
+    def echo(self, event, message):
+        msg = event.msg
+        event.channel.send_message(message)
+        try:
+            msg.delete()
+        except:
+            pass
 
     @naPlugin.command('eval', level=CommandLevels.OWNER)
     def cmd_eval(self, event):
