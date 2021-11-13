@@ -15,7 +15,7 @@ def genkey():
 
 
 def root():
-    return send_file('nautils/www/dmeta.html')
+    return send_file('./nautils/www/dmeta.html')
 
 
 class webPlugin(naPlugin):

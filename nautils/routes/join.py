@@ -29,7 +29,7 @@ def make_discord_session_join(token=None, state=None, scope=None):
 @join.route('/')
 def auth_discord():
     if "discord" in str(request.headers.get('User-Agent')).lower():
-        return send_file('nautils/www/djoin.html')
+        return send_file('./nautils/www/djoin.html')
 
     if not Getcfgvalue("options.joins.enabled", False):
         return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
