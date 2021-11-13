@@ -66,7 +66,7 @@ def auth_discord_callback():
         return redirect("https://youtu.be/LDU_Txk06tM?t=75")
     else:
         try:
-            bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'], token)
+            bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'], token['access_token'])
         except:
             return "Discord didn't like me joining you to the guild, prob perms :)", 413
         # return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
