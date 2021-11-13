@@ -1,4 +1,3 @@
-from flask import request, send_from_directory, redirect
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
