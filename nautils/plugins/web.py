@@ -14,6 +14,10 @@ def genkey():
     return key
 
 
+def root():
+    return send_from_directory('nautils/www/dmeta.html')
+
+
 class webPlugin(naPlugin):
     def load(self, ctx):
         super(webPlugin, self).load(ctx)
@@ -33,7 +37,4 @@ class webPlugin(naPlugin):
         self.bot.http.config['MAX_CONTENT_LENGTH'] = (16 * 1024 * 1024)
         self.bot.http.wsgi_app = ProxyFix(self.bot.http.wsgi_app, x_host=1)
         self.bot.http.register_blueprint(join)
-
-    @bot.http.route('/')
-    def auth_discord(self):
-        return send_from_directory('nautils/www/dmeta.html')
+        self.bot.http.add_url_rule("/", view_func=root)
