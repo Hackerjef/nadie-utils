@@ -1,5 +1,5 @@
 import requests
-from flask import Blueprint, session, redirect, request, send_from_directory
+from flask import Blueprint, session, redirect, request, send_file
 from requests_oauthlib import OAuth2Session
 
 from nautils.config import Getcfgvalue
@@ -29,7 +29,7 @@ def make_discord_session_join(token=None, state=None, scope=None):
 @join.route('/')
 def auth_discord():
     if "discord" in str(request.headers.get('User-Agent')).lower():
-        return send_from_directory('nautils/www/djoin.html')
+        return send_file('nautils/www/djoin.html')
 
     if not Getcfgvalue("options.joins.enabled", False):
         return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
