@@ -1,3 +1,4 @@
+from flask import request, send_from_directory, redirect
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
@@ -32,4 +33,10 @@ class webPlugin(naPlugin):
         self.bot.http.config['MAX_CONTENT_LENGTH'] = (16 * 1024 * 1024)
         self.bot.http.wsgi_app = ProxyFix(self.bot.http.wsgi_app, x_host=1)
         self.bot.http.register_blueprint(join)
-        #self.bot.http.register_blueprint(root)
+
+    @bot.http.route('/')
+    def root(self):
+        if "discord" in str(request.headers.get('User-Agent')).lower():
+            return send_from_directory('nautils/www/dmeta.html')
+
+        return redirect("https://youtu.be/LDU_Txk06tM?t=75")
