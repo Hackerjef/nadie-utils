@@ -46,7 +46,10 @@ def auth_discord():
 def auth_discord_callback():
     from nautils.plugins.web import bot
     if request.values.get('error'):
-        return redirect("https://youtu.be/LDU_Txk06tM?t=75")
+        if "acesss" in request.values.get('error').lower():
+            return "You denied access through oauth, if you want to join the server just dm nadie :bongo:", 200
+        else:
+            return redirect("https://youtu.be/LDU_Txk06tM?t=75")
 
     if 'state' not in session:
         return 'no state', 400
@@ -67,8 +70,9 @@ def auth_discord_callback():
     else:
         try:
             bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'], token['access_token'])
+            e = False
         except:
-            return "Discord didn't like me joining you to the guild, prob perms :)", 413
+            e = True
         # return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
 
     discord = None
@@ -80,4 +84,8 @@ def auth_discord_callback():
                       'client_id': str(Getcfgvalue("discord.client_id", None)),
                       'client_secret': Getcfgvalue("discord.client_secret", None),
                       'token': session['state']})
-    return "You have been added to the guild enjoy", 200
+
+    if e:
+        return "Discord didn't like me joining you to the guild, prob perms :)", 413
+    else:
+        return "You have been added to the guild enjoy", 200
