@@ -33,8 +33,9 @@ class ControlPlugin(naPlugin):
         event.msg.reply(PY_CODE_BLOCK.format(gpull))
 
         if pipfile_hash != Get_Hash("Pipfile.lock"):
-            event.msg.reply("Installing packages...")
-            gevent.subprocess.check_output(["env", "CI=true", "pipenv", "--bare", "install"]).decode("utf-8", "ignore")
+            m = event.msg.reply("Installing packages...")
+            p = gevent.subprocess.check_output(["env", "CI=true", "pipenv", "--bare", "install"]).decode("utf-8", "ignore")
+            m.edit(PY_CODE_BLOCK.format(p))
 
         self.ProcessControl(signalNumber=2)
 
