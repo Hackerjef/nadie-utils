@@ -26,11 +26,10 @@ class webPlugin(naPlugin):
         super(webPlugin, self).load(ctx)
         if self.bot.client.config.shard_id != 0:
             return self.unload(ctx)
+
         global bot
         bot = self.bot
-        self.init_api()
 
-    def init_api(self):
         if Getcfgvalue("web.secret_key", None):
             secret_key = Getcfgvalue("web.secret_key", None)
         else:
