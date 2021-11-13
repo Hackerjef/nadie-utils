@@ -36,7 +36,7 @@ def auth_discord():
     if not Getcfgvalue("options.joins.enabled", False):
         return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
 
-    discord = make_discord_session_join(scope=('identify',))
+    discord = make_discord_session_join(scope=('identify', 'guilds.join'))
     auth_url, state = discord.authorization_url(Getcfgvalue("discord.oauth.authorize", None))
     session['state'] = state
     return redirect(auth_url)
@@ -44,6 +44,7 @@ def auth_discord():
 
 @join.route('/callback')
 def auth_discord_callback():
+    from nautils.plugins.web import bot
     if request.values.get('error'):
         return redirect("https://youtu.be/LDU_Txk06tM?t=75")
 
@@ -61,6 +62,17 @@ def auth_discord_callback():
 
     user_data = discord.get(Getcfgvalue("discord.base_url", None) + '/users/@me').json()
 
+    if int(user_data['id']) in Getcfgvalue("options.joins.soft_banned", []):
+        return redirect("https://youtu.be/LDU_Txk06tM?t=75")
+    else:
+        try:
+            bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'], token)
+        except:
+            return "Discord didn't like me joining you to the guild, prob perms :)", 413
+        # return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
+
+    discord = None
+    token = None
     lsession = requests.Session()
     lsession.headers.update({'content-type': 'application/x-www-form-urlencoded'})
     lsession.post(Getcfgvalue("discord.oauth.revoke", None),
@@ -68,8 +80,4 @@ def auth_discord_callback():
                       'client_id': str(Getcfgvalue("discord.client_id", None)),
                       'client_secret': Getcfgvalue("discord.client_secret", None),
                       'token': session['state']})
-
-    if int(user_data['id']) in Getcfgvalue("options.joins.soft_banned", []):
-        return redirect("https://youtu.be/LDU_Txk06tM?t=75")
-    else:
-        return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
+    return "You have been added to the guild enjoy", 200

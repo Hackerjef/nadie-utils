@@ -6,6 +6,7 @@ from nautils import naPlugin
 from nautils.config import Getcfgvalue
 from nautils.routes import join
 
+bot = None
 
 def genkey():
     from secrets import choice
