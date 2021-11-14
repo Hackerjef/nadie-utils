@@ -24,7 +24,7 @@ class IntergrationPlugin(naPlugin):
             abort(401, 'invalid request signature')
 
         if request.json["type"] == InteractionType.PING:
-            return jsonify(InteractionResponse.create(type=InteractionCallbackType.PONG))
+            return jsonify(InteractionResponse.create(type=InteractionCallbackType.PONG, data=None))
         elif request.json["type"] == InteractionType.APPLICATION_COMMAND:
             return self.app_command()
         elif request.json['type'] == InteractionType.MessageComponent:
