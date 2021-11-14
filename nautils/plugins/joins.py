@@ -2,6 +2,7 @@ import gevent
 import requests
 from flask import session, redirect, request, send_file
 from gevent import os
+from oauthlib.oauth2 import MismatchingStateError
 from requests_oauthlib import OAuth2Session
 
 from nautils import naPlugin
@@ -91,10 +92,13 @@ class joinPlugin(naPlugin):
 
         discord = make_discord_session_join(state=session['state'])
 
-        token = discord.fetch_token(
-            Getcfgvalue("discord.oauth.token", None),
-            client_secret=Getcfgvalue("discord.client_secret", None),
-            authorization_response=request.url)
+        try:
+            token = discord.fetch_token(
+                Getcfgvalue("discord.oauth.token", None),
+                client_secret=Getcfgvalue("discord.client_secret", None),
+                authorization_response=request.url)
+        except MismatchingStateError:
+            return redirect("/join")
 
         discord = make_discord_session_join(token=token)
 
