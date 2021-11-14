@@ -1,11 +1,9 @@
 import os
 
-from flask import send_file
+from flask import send_file, Response
 from werkzeug.middleware.proxy_fix import ProxyFix
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
-
-bot = None
 
 
 def genkey():
@@ -23,9 +21,6 @@ class webPlugin(naPlugin):
         if self.bot.client.config.shard_id != 0:
             return self.unload(ctx)
 
-        global bot
-        bot = self.bot
-
         if Getcfgvalue("web.secret_key", None):
             secret_key = Getcfgvalue("web.secret_key", None)
         else:
@@ -38,3 +33,9 @@ class webPlugin(naPlugin):
     @naPlugin.route("/")
     def webroot(self):
         return send_file(os.getcwd() + '/nautils/www/dmeta.html')
+
+    @naPlugin.route('/robots.txt')
+    def noindex(self):
+        r = Response(response="User-Agent: *\nDisallow: /\n", status=200, mimetype="text/plain")
+        r.headers["Content-Type"] = "text/plain; charset=utf-8"
+        return r

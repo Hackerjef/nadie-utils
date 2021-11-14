@@ -80,7 +80,6 @@ class joinPlugin(naPlugin):
 
     @naPlugin.route('/join/callback')
     def auth_discord_callback(self):
-        from nautils.plugins.web import bot
         if request.values.get('error'):
             if "acesss" in request.values.get('error').lower():
                 return "You denied access through oauth, if you want to join the server just dm nadie :bongo:", 200
@@ -108,8 +107,8 @@ class joinPlugin(naPlugin):
             return redirect("https://youtu.be/LDU_Txk06tM?t=75")
         else:
             try:
-                bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'],
-                                                  token['access_token'])
+                self.bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'],
+                                                       token['access_token'])
                 e = False
             except:
                 e = True
