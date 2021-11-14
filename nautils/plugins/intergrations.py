@@ -17,10 +17,10 @@ class IntergrationPlugin(naPlugin):
         timestamp = request.headers["X-Signature-Timestamp"]
         body = request.data.decode("utf-8")
 
-        try:
-            self.vkey.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
-        except BadSignatureError:
-            abort(401, 'invalid request signature')
+        # try:
+        #     self.vkey.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
+        # except BadSignatureError:
+        #     abort(401, 'invalid request signature')
 
 
 
