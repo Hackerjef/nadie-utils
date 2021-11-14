@@ -1,3 +1,4 @@
+from disco.types.application import InteractionType, InteractionResponse, InteractionCallbackType
 from flask import request, jsonify, abort
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
@@ -22,10 +23,22 @@ class IntergrationPlugin(naPlugin):
         except BadSignatureError:
             abort(401, 'invalid request signature')
 
+        if request.json["type"] == InteractionType.PING:
+            return jsonify(InteractionResponse.create(type=InteractionCallbackType.PONG))
+        elif request.json["type"] == InteractionType.APPLICATION_COMMAND:
+            return self.app_command()
+        elif request.json['type'] == InteractionType.MessageComponent:
+            return self.msg_component()
+        elif request.json['type'] == 4:
+            return self.app_autocomplete()
+        else:
+            abort(401, 'invalid type given')
 
+    def app_command(self):
+        pass
 
-        #do shit
-        if request.json["type"] == 1:
-            return jsonify({
-                "type": 1
-            })
+    def app_autocomplete(self):
+        pass
+
+    def msg_component(self):
+        pass
