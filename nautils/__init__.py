@@ -12,4 +12,5 @@ class naPlugin(Plugin):
     def name(self):
         return self.__class__.__name__.replace('Plugin', '').lower()
 
+
 register_plugin_base_class(naPlugin)
