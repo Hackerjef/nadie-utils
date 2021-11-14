@@ -1,15 +1,11 @@
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
 
+
 def check_guild(g):
     for m in list(g.members):
         print(m)
-        #if m in Getcfgvalue("options.joins.soft_banned", []):
-
-
-
-
-
+        # if m in Getcfgvalue("options.joins.soft_banned", []):
 
 
 class joinPlugin(naPlugin):
@@ -17,10 +13,16 @@ class joinPlugin(naPlugin):
         super(joinPlugin, self).load(ctx)
 
         g = Getcfgvalue("options.gid", None)
+
+        while True:
+            if self.bot.client.state.guilds.get(int(g)):
+                self.log.info("yes")
+            else:
+                self.log.info("no")
         self.log.info(g)
         if g:
-            if self.bot.client.state.guilds.get(g):
-                self.spawn(check_guild, self.bot.client.state.guilds.get(g))
+            if self.bot.client.state.guilds.get(int(g)):
+                self.spawn(check_guild, self.bot.client.state.guilds.get(int(g)))
             else:
                 self.log.error("Guild not found for joins")
 
