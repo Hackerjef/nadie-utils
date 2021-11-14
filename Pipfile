@@ -9,6 +9,7 @@ holster = {editable = true, git = "https://github.com/elderlabs/holster"}
 gitpython = "*"
 flask = "*"
 requests-oauthlib = "*"
+pynacl = "*"
 
 [dev-packages]
 
