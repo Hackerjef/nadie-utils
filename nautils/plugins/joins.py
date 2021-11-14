@@ -7,10 +7,10 @@ from nautils.config import Getcfgvalue
 class joinPlugin(naPlugin):
     def load(self, ctx):
         super(joinPlugin, self).load(ctx)
-        self.hasnt_ran = True
 
     @naPlugin.listen("Ready")
     def joins_ready(self, event):
+        self.hasnt_ran = True
         gid = Getcfgvalue("options.gid", None)
         if gid:
             while self.hasnt_ran:

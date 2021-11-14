@@ -8,6 +8,7 @@ from nautils.routes import join
 
 bot = None
 
+
 def genkey():
     from secrets import choice
     import string
@@ -15,10 +16,6 @@ def genkey():
     print("Cannot grab flask secret key from env, Generating a temp one")
     print("Use this key in Env if you want to presist sessions:\n" + key)
     return key
-
-
-def root():
-    return send_file(os.getcwd() + '/nautils/www/dmeta.html')
 
 
 class webPlugin(naPlugin):
@@ -39,4 +36,7 @@ class webPlugin(naPlugin):
         self.bot.http.config['MAX_CONTENT_LENGTH'] = (16 * 1024 * 1024)
         self.bot.http.wsgi_app = ProxyFix(self.bot.http.wsgi_app, x_host=1)
         self.bot.http.register_blueprint(join)
-        self.bot.http.add_url_rule("/", view_func=root)
+
+    @naPlugin.route("/")
+    def webroot(self):
+        return send_file(os.getcwd() + '/nautils/www/dmeta.html')
