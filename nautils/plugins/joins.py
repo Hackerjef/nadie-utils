@@ -25,6 +25,7 @@ class joinPlugin(naPlugin):
                                 pass
                             except:
                                 self.log.info(f"Can't kick user - {mid}")
+                    has_ran = True
                 else:
                     self.log.error("Guild not found for joins, sleeping 15")
                     gevent.sleep(15)
