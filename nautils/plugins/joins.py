@@ -64,7 +64,7 @@ class joinPlugin(naPlugin):
             # Fuck your nan
             event.kick(reason=f"{event.id} - User has been soft banned :)")
 
-    @naPlugin.route('/join')
+    @naPlugin.route('/join', strict_slashes=False)
     def auth_discord(self):
         if "discord" in str(request.headers.get('User-Agent')).lower():
             return send_file(os.getcwd() + '/nautils/www/djoin.html')
