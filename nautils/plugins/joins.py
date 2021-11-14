@@ -53,7 +53,7 @@ class joinPlugin(naPlugin):
                                 self.log.info(f"Can't kick user - {mid}")
                     hasnt_ran = False
                 else:
-                    self.log.warn("Guild not found for joins, sleeping for 1s")
+                    self.log.warning("Guild not found for joins, sleeping for 1s")
                     gevent.sleep(1)
             self.log.info(f"Finished illiteration of members in guild {gid} kicked {has_kicked} users")
 

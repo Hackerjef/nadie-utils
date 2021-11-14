@@ -10,6 +10,7 @@ gitpython = "*"
 flask = "*"
 requests-oauthlib = "*"
 pynacl = "*"
+cffi = "*"
 
 [dev-packages]
 
