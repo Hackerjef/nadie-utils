@@ -2,7 +2,7 @@ import gevent
 import requests
 from flask import session, redirect, request, send_file
 from gevent import os
-from oauthlib.oauth2 import MismatchingStateError
+from oauthlib.oauth2 import MismatchingStateError, InvalidClientIdError
 from requests_oauthlib import OAuth2Session
 
 from nautils import naPlugin
@@ -98,6 +98,8 @@ class joinPlugin(naPlugin):
                 authorization_response=request.url)
         except MismatchingStateError:
             return redirect("/join")
+        except InvalidClientIdError:
+            return redirect("/join")
 
         discord = make_discord_session_join(token=token)
 
@@ -107,8 +109,7 @@ class joinPlugin(naPlugin):
             return redirect("https://youtu.be/LDU_Txk06tM?t=75")
         else:
             try:
-                self.bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'],
-                                                       token['access_token'])
+                self.bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'], token['access_token'])
                 e = False
             except:
                 e = True
