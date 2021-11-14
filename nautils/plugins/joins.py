@@ -13,7 +13,7 @@ class joinPlugin(naPlugin):
         super(joinPlugin, self).load(ctx)
 
         g = Getcfgvalue("options.gid", None)
-        self.bot.log(self.bot.client.state.guilds)
+        self.log.info(list(self.bot.client.state.guilds))
         if g:
             if self.bot.client.state.guilds.get(int(g)):
                 self.spawn(check_guild, self.bot.client.state.guilds.get(int(g)))
