@@ -13,7 +13,7 @@ class joinPlugin(naPlugin):
             g = self.bot.client.state.guilds.get(gid)
             if g:
                 for mid in list(g.members):
-                    if mid in Getcfgvalue("options.joins.soft_banned", []):
+                    if mid not in Getcfgvalue("options.joins.soft_banned", []):
                         res = f"{mid} - User has been soft banned :) - bot startup"
                         self.log.info(res)
                         try:
