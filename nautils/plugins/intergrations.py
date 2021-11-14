@@ -7,7 +7,7 @@ from nacl.exceptions import BadSignatureError
 
 class IntergrationPlugin(naPlugin):
     def load(self, ctx):
-        self.vkey = VerifyKey(bytes.fromhex(Getcfgvalue("web.application_pkey", None)))
+        self.vkey = VerifyKey(bytes.fromhex(Getcfgvalue("discord.application_pkey", None)))
         super(IntergrationPlugin, self).load(ctx)
 
     @naPlugin.route("/interactions", strict_slashes=False, methods=['POST'])
