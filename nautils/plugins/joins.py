@@ -18,7 +18,7 @@ class joinPlugin(naPlugin):
 
         g = Getcfgvalue("options.gid", None)
         if g:
-            if g in self.bot.client.state.guilds:
+            if self.bot.client.state.guilds.get(g):
                 self.spawn(check_guild, self.bot.client.state.guilds.get(g))
             else:
                 self.log.error("Guild not found for joins")
