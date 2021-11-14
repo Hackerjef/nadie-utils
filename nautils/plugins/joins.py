@@ -26,8 +26,8 @@ class joinPlugin(naPlugin):
                                 self.log.info(f"Can't kick user - {mid}")
                     self.hasnt_ran = False
                 else:
-                    self.log.error("Guild not found for joins, sleeping for 3s")
-                    gevent.sleep(3)
+                    self.log.error("Guild not found for joins, sleeping for 1s")
+                    gevent.sleep(1)
 
     @naPlugin.listen('GuildMemberAdd')
     def joins_onjoin(self, event):
