@@ -7,13 +7,13 @@ from nautils.config import Getcfgvalue
 class joinPlugin(naPlugin):
     def load(self, ctx):
         super(joinPlugin, self).load(ctx)
+        self.hasnt_ran = True
 
     @naPlugin.listen("Ready")
     def joins_ready(self, event):
         gid = Getcfgvalue("options.gid", None)
         if gid:
-            has_ran = False
-            while not has_ran:
+            while self.hasnt_ran:
                 g = self.bot.client.state.guilds.get(gid)
                 if g:
                     for mid in list(g.members):
@@ -25,10 +25,10 @@ class joinPlugin(naPlugin):
                                 pass
                             except:
                                 self.log.info(f"Can't kick user - {mid}")
-                    has_ran = True
+                    self.hasnt_ran = False
                 else:
-                    self.log.error("Guild not found for joins, sleeping 15")
-                    gevent.sleep(15)
+                    self.log.error("Guild not found for joins, sleeping for 3s")
+                    gevent.sleep(3)
 
     @naPlugin.listen('GuildMemberAdd')
     def joins_onjoin(self, event):
