@@ -8,19 +8,16 @@ def check_guild(g):
         # if m in Getcfgvalue("options.joins.soft_banned", []):
 
 
+
+
 class joinPlugin(naPlugin):
     def load(self, ctx):
         super(joinPlugin, self).load(ctx)
 
+    @naPlugin.listen("Ready")
+    def joins_ready(self, event):
         g = Getcfgvalue("options.gid", None)
-        self.log.info(list(self.bot.client.state.guilds))
-        if g:
-            if self.bot.client.state.guilds.get(int(g)):
-                self.spawn(check_guild, self.bot.client.state.guilds.get(int(g)))
-            else:
-                self.log.error("Guild not found for joins")
-
-        # todo: go through member list and yeet people out
+        self.log.info(self.bot.client.state.guilds)
 
     @naPlugin.listen('GuildMemberAdd')
     def joins_onjoin(self, event):
