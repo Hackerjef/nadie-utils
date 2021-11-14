@@ -21,7 +21,7 @@ class joinPlugin(naPlugin):
                             res = f"{mid} - User has been soft banned :) - bot startup"
                             self.log.info(res)
                             try:
-                                g.kick(mid, reason=res)
+                                self.client.api.guilds_members_kick(g.id, mid, reason=res)
                             except:
                                 self.log.info(f"Can't kick user - {mid}")
                     self.hasnt_ran = False
