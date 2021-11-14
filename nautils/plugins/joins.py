@@ -1,5 +1,6 @@
 import gevent
 import requests
+from disco.api.http import APIException
 from flask import session, redirect, request, send_file
 from gevent import os
 from oauthlib.oauth2 import MismatchingStateError, InvalidClientIdError
@@ -34,24 +35,27 @@ class joinPlugin(naPlugin):
 
     @naPlugin.listen("Ready")
     def joins_ready(self, event):
-        self.hasnt_ran = True
+        hasnt_ran = True
+        has_kicked = 0
         gid = Getcfgvalue("options.gid", None)
         if gid:
-            while self.hasnt_ran:
+            while hasnt_ran:
                 g = self.bot.client.state.guilds.get(gid)
                 if g:
                     for mid in list(g.members):
                         if mid in Getcfgvalue("options.joins.soft_banned", []):
                             res = f"{mid} - User has been soft banned :) - bot startup"
-                            self.log.info(res)
                             try:
                                 self.client.api.guilds_members_kick(g.id, mid, reason=res)
-                            except:
+                                self.log.info(res)
+                                has_kicked += 1
+                            except APIException:
                                 self.log.info(f"Can't kick user - {mid}")
-                    self.hasnt_ran = False
+                    hasnt_ran = False
                 else:
                     self.log.error("Guild not found for joins, sleeping for 1s")
                     gevent.sleep(1)
+            self.log.info(f"Finished illiteration of members in guild {gid} kicked {has_kicked} users")
 
     @naPlugin.listen('GuildMemberAdd')
     def joins_onjoin(self, event):
@@ -109,7 +113,8 @@ class joinPlugin(naPlugin):
             return redirect("https://youtu.be/LDU_Txk06tM?t=75")
         else:
             try:
-                self.bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'], token['access_token'])
+                self.bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'],
+                                                       token['access_token'])
                 e = False
             except:
                 e = True
