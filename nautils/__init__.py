@@ -14,3 +14,4 @@ class naPlugin(Plugin):
 
 
 register_plugin_base_class(naPlugin)
+

@@ -53,7 +53,7 @@ class joinPlugin(naPlugin):
                                 self.log.info(f"Can't kick user - {mid}")
                     hasnt_ran = False
                 else:
-                    self.log.error("Guild not found for joins, sleeping for 1s")
+                    self.log.warn("Guild not found for joins, sleeping for 1s")
                     gevent.sleep(1)
             self.log.info(f"Finished illiteration of members in guild {gid} kicked {has_kicked} users")
 
@@ -86,7 +86,7 @@ class joinPlugin(naPlugin):
     def auth_discord_callback(self):
         if request.values.get('error'):
             if "acesss" in request.values.get('error').lower():
-                return "You denied access through oauth, if you want to join the server just dm nadie :bongo:", 200
+                return "You denied access through oauth, if you want to join the server w/o oauth just dm nadie :bongo:", 403
             else:
                 return redirect("https://youtu.be/LDU_Txk06tM?t=75")
 
@@ -116,9 +116,8 @@ class joinPlugin(naPlugin):
                 self.bot.client.api.guilds_members_add(Getcfgvalue("options.gid", None), user_data['id'],
                                                        token['access_token'])
                 e = False
-            except:
+            except APIException:
                 e = True
-            # return redirect(Getcfgvalue("options.joins.invite", "https://nadie.dev"))
 
         discord = None
         token = None
@@ -131,6 +130,6 @@ class joinPlugin(naPlugin):
                           'token': session['state']})
 
         if e:
-            return "Discord didn't like me joining you to the guild, prob perms :)", 413
+            return "Discord didn't like me joining you to the guild, prob perms :) please dm nadie", 413
         else:
             return "You have been added to the guild enjoy", 200

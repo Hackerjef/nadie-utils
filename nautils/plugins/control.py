@@ -1,10 +1,9 @@
 import os
 import signal
-
-import gevent.subprocess
 import git
 
 from disco.bot import CommandLevels
+from gevent import subprocess
 from gevent.exceptions import BlockingSwitchOutError
 
 from nautils import naPlugin
@@ -34,7 +33,7 @@ class ControlPlugin(naPlugin):
 
         if pipfile_hash != Get_Hash("Pipfile.lock"):
             m = event.msg.reply("Installing packages...")
-            p = gevent.subprocess.check_output(["env", "CI=true", "pipenv", "--bare", "install"]).decode("utf-8", "ignore")
+            p = subprocess.check_output(["env", "CI=true", "pipenv", "--bare", "install"]).decode("utf-8", "ignore")
             m.edit(PY_CODE_BLOCK.format(p))
 
         self.ProcessControl(signalNumber=2)

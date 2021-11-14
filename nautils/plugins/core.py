@@ -2,6 +2,7 @@ import pprint
 
 from datetime import datetime
 
+from disco.api.http import APIException
 from disco.bot import CommandLevels
 from disco.bot.command import CommandEvent
 from disco.types.channel import ChannelType
@@ -67,7 +68,7 @@ class CorePlugin(naPlugin):
         event.channel.send_message(message)
         try:
             msg.delete()
-        except:
+        except APIException:
             pass
 
     @naPlugin.command('eval', level=CommandLevels.OWNER)
