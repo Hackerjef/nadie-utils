@@ -1,4 +1,6 @@
-from disco.types.application import InteractionType, InteractionResponse, InteractionCallbackType
+# This is not getting used because interactions makes me die :) AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+from disco.types.application import InteractionType,  Interaction
 from flask import request, jsonify, abort
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
@@ -24,21 +26,22 @@ class IntergrationPlugin(naPlugin):
             abort(401, 'invalid request signature')
 
         if request.json["type"] == InteractionType.PING:
-            return jsonify(InteractionResponse.create(type=InteractionCallbackType.PONG, data=None))
+            self.log.info("ping")
+            self.log.info(body)
+            return jsonify({"type": 1})
         elif request.json["type"] == InteractionType.APPLICATION_COMMAND:
-            return self.app_command()
+            interaction = Interaction.create(client=self.bot.client, data=request.json)
+            self.log.info("app command")
+            self.log.info(interaction)
+            return "ok", 200
         elif request.json['type'] == InteractionType.MessageComponent:
-            return self.msg_component()
+            interaction = Interaction.create(client=self.bot.client, data=request.json)
+            self.log.info("msg component")
+            self.log.info(interaction)
+            return "ok", 200
         elif request.json['type'] == 4:
-            return self.app_autocomplete()
+            self.log.info("..auto complete?")
+            self.log.info(body)
+            return "ok", 200
         else:
             abort(401, 'invalid type given')
-
-    def app_command(self):
-        pass
-
-    def app_autocomplete(self):
-        pass
-
-    def msg_component(self):
-        pass
