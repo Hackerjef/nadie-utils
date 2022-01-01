@@ -12,7 +12,6 @@ from nautils import naPlugin
 from nautils.config import Getcfgvalue
 from nautils.utils import parse_natural, get_level
 
-
 PY_CODE_BLOCK = u'```py\n{}\n```'
 
 
@@ -40,7 +39,8 @@ class CorePlugin(naPlugin):
         if not event.message.channel.get_permissions(self.state.me).can(Permissions.SEND_MESSAGES):
             return
 
-        commands = list(self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
+        commands = list(
+            self.bot.get_commands_for_message(False, {}, Getcfgvalue("options.prefix", ['!']), event.message))
         if not commands:
             return
 
@@ -51,16 +51,22 @@ class CorePlugin(naPlugin):
             if ulevel < clevel:
                 continue
 
-            command_event = CommandEvent(command, event.message, match)
+            command_event = CommandEvent(command, event, match)
             command.plugin.execute(command_event)
 
     @naPlugin.command('uptime', level=CommandLevels.MOD)
     def command_uptime(self, event):
-        event.msg.reply(':stopwatch: Bot was started `{}` ago.'.format(parse_natural(datetime.utcnow() - self.startup)))
+        event.msg.reply(':stopwatch: AI was started `{}` ago.'.format(parse_natural(datetime.utcnow() - self.startup)))
 
     @naPlugin.command('ping', level=CommandLevels.MOD)
     def cmd_ping(self, event):
         return event.msg.reply("Current Ping: **{}** ms".format(round(self.client.gw.latency, 2)))
+
+    @naPlugin.command('reboot', level=CommandLevels.OWNER)
+    def cmd_reboot(self, event):
+        event.msg.reply("👌")
+        self.log.info("Restarting bot due to update!")
+        self.bot.plugins['ControlPlugin'].ProcessControl(signalNumber=2)
 
     @naPlugin.command('echo', '<message:str...>', level=CommandLevels.OWNER)
     def echo(self, event, message):

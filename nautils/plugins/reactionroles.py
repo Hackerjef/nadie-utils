@@ -1,6 +1,7 @@
 import re
 
 import gevent
+from disco.bot import CommandLevels
 
 from nautils import naPlugin
 from nautils.config import Getcfgvalue
@@ -35,11 +36,23 @@ class ReactionRolesPlugin(naPlugin):
                             rid = int(emoji[1])
                             dformat = f"{str(emoji[0])}:{rid}"
                             rc = next(x for x in msg.reactions if x.emoji.id == rid)
-                            if rc:
-                                if not rc.me:
+                            roleid = rcfg.get("reactions").get(reaction, None)
+                            if roleid:
+                                if rc:
+                                    if not rc.me:
+                                        msg.add_reaction(dformat)
+                                    reactors = msg.get_reactors(dformat)
+                                    users = [i.id for i in reactors]
+                                    for uid in users:
+                                        if uid == self.bot.client.state.me.id:
+                                            continue
+                                        gmember = msg.guild.get_member(uid)
+                                        if roleid not in gmember.roles:
+                                            gmember.add_role(roleid, reason="Reaction role - bot startup")
+                                else:
                                     msg.add_reaction(dformat)
                             else:
-                                msg.add_reaction(dformat)
+                                self.log.info(f"Role is None for {mid}")
                     else:
                         self.log.warn(f"{mid} doesn't exist :)")
                 else:
@@ -74,3 +87,7 @@ class ReactionRolesPlugin(naPlugin):
         if not rid:
             return
         event.guild.get_member(event.user_id).remove_role(role=rid, reason="Reaction role")
+
+    @naPlugin.command('rrcheck', level=CommandLevels.OWNER)
+    def rr_update(self, event):
+        return self.check_reactions()

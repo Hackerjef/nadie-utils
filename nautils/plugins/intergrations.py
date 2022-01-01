@@ -16,8 +16,12 @@ class IntergrationPlugin(naPlugin):
     @naPlugin.route("/interactions", strict_slashes=False, methods=['POST'])
     def interactions(self):
         # Check security
-        signature = request.headers["X-Signature-Ed25519"]
-        timestamp = request.headers["X-Signature-Timestamp"]
+        signature, timestamp = None, None
+        try:
+            signature = request.headers["X-Signature-Ed25519"]
+            timestamp = request.headers["X-Signature-Timestamp"]
+        except:
+            abort(400)
         body = request.data.decode("utf-8")
 
         try:
