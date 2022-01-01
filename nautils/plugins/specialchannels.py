@@ -69,8 +69,9 @@ class Specialchannel(naPlugin):
         # exception list
         pexception = Getcfgvalue('options.special_channels.pexception', [])
 
-        if event.content and "abuse" in event.content and event.author.id == 539144993571602433:
-            return self.abuse(event, pexception)
+        # blame cattu
+        # if event.content and "abuse" in event.content and event.author.id == 539144993571602433:
+        #     return self.abuse(event, pexception)
 
         # A listener
         if event.channel.id == Getcfgvalue('options.special_channels.a.cid', None):
