@@ -54,6 +54,18 @@ class Specialchannel(naPlugin):
         event.guild.get_member(event.author).ban(reason="banned channel")
         event.guild.delete_ban(event.author.id)
 
+    def cdad(self, event, exception: list):
+        if event.author.bot:
+            return event.delete()
+
+        if not event.content:
+            return event.delete()
+
+        if event.author.id in exception + Getcfgvalue('options.special_channels.dad.exception', []):
+            return
+
+        event.msg.reply(f"HI! {event.content}")
+
     def abuse(self, event, execption: list):
         if event.author.id in execption:
             return
@@ -68,10 +80,6 @@ class Specialchannel(naPlugin):
     def special_listener(self, event):
         # exception list
         pexception = Getcfgvalue('options.special_channels.pexception', [])
-
-        # blame cattu
-        # if event.content and "abuse" in event.content and event.author.id == 539144993571602433:
-        #     return self.abuse(event, pexception)
 
         # A listener
         if event.channel.id == Getcfgvalue('options.special_channels.a.cid', None):
@@ -89,4 +97,9 @@ class Specialchannel(naPlugin):
         if event.channel.id == Getcfgvalue('options.special_channels.ban.cid', None):
             if Getcfgvalue('options.special_channels.ban.enabled', False):
                 return self.cban(event, pexception)
+            return
+
+        if event.channel.id == Getcfgvalue('options.special_channels.dad.cid', None):
+            if Getcfgvalue('options.special_channels.dad.enabled', False):
+                return self.cdad(event, pexception)
             return
